@@ -1,0 +1,10 @@
+CC = gcc
+CFLAGS = 
+RM = rm
+AS = as
+LD = ld
+LDFLAGS = 
+LIBS = 
+ECHO = echo
+SHELL = /bin/sh
+INCLUDE = 
