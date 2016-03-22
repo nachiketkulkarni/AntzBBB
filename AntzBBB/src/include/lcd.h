@@ -67,7 +67,8 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 
-void init();
+void lcd_init();
+void lcd_deinit();
 void clrscr();
 void invert_color();
 void init_all_segments();

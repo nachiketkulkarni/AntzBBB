@@ -298,11 +298,11 @@ init_all_segments()
 }
 
 /*
- * init_lcd()
+ * init_lcd_screen()
  *	Initialize the LCD by setting its attributes
  */
 void
-init_lcd()
+init_lcd_screen()
 {
 	lcd_write_cmd(0x21);	// LCD extended commands
 	lcd_write_cmd(0xB8);	// set LCD Vop (contrast)
@@ -314,19 +314,76 @@ init_lcd()
 }
 
 /*
- * init()
+ * lcd_init()
  *	Initialize the code
  */
 void
-init()
+lcd_init()
 {
 	init_export();
 	open_files();
 	write_directions();
 	init_rst();
 	init_spi_dev();
-	init_lcd();
+	init_lcd_screen();
 	memset(screen_buffer, 0, SCREEN_BUF_SIZE);	//this buffer is used for scrolling purpose
+}
+
+/*
+ * lcd_deinit()
+ *	De-initialize the code
+ */
+
+void lcd_deinit()
+{
+	if (close(fd_rst_dir) == -1) {
+		goto close_err;
+	}
+	
+	if (close(fd_rst_val) == -1) {
+		goto close_err;
+	}
+
+	if (close(fd_dc_dir) == -1) {
+		goto close_err;
+	}
+	
+	if (close(fd_dc_val) == -1) {
+		goto close_err;
+	}
+	
+	if (close(fd_cs_dir) == -1) {
+		goto close_err;
+	}
+	
+	if (close(fd_cs_val) == -1) {
+		goto close_err;
+	}
+
+	if (close(fd_din_dir) == -1) {
+		goto close_err;
+	}
+	
+	if (close(fd_din_val) == -1) {
+		goto close_err;
+	}
+	
+	if (close(fd_clk_dir) == -1) {
+		goto close_err;
+	}
+	
+	if (close(fd_clk_val) == -1) {
+		goto close_err;
+	}
+	
+	if (close(fd_spi_dev) == -1) {
+		goto close_err;
+	}
+
+	return;
+close_err:
+	fprintf(stderr, "close() failed\n");
+	exit(EXIT_FAILURE);
 }
 
 /*

@@ -31,11 +31,11 @@ int main()
 	int ret;
 	int i = 0;
 	
-	init();
+	lcd_init();
 	init_all_segments();
 	sleep(3);
 
-	init();
+	//init();
 	clrscr();
 	for(i = 0; i < 10; i++) {
 		lcd_printf("I am not here: %d", i);
@@ -87,5 +87,6 @@ int main()
 //	lcd_set_coordinates(0, 2);
 //	lcd_write_str(ret_time_str());
 
+	lcd_deinit();
 	return 0;
 }
