@@ -1,0 +1,46 @@
+.\" Project		: AntzBBB
+.\" Hardware Version	: 2.0
+.\" Research Group	: Massively Distributed Robotics Group
+.\" Lab			: Distributed Multi-Agent Laboratory
+.\" Department		: Electrical Engineering and Computer Science
+.\" University		: Syracuse University, Syracuse, NY
+
+.\" This man page documents one of the APIs of one of the subsystems of
+.\" Antz Robots.
+
+
+.TH LCD_PRINTF 3 "03-22-2016" "LCD" "version 1.0"
+.SH NAME
+lcd_printf - a libc printf like function for formatted output conversion
+.SH SYNOPSIS
+.B #include "lcd.h"
+.sp
+.BI "int lcd_printf(const char *fmt, ...)"
+
+.SH DESCRIPTION
+.BI "lcd_printf()"
+is a function that performs exactly like standard c library printf function
+except it displayes the specified format string on the lcd screen.
+.SS "Return value"
+Upon successful return the function returns 0.
+
+.SH BUGS
+.B *
+The function should return appropriate error code on failure.
+
+.SH "SEE ALSO"
+.BR lcd_init(3)
+.BR lcd_deinit(3)
+.BR clrscr(3)
+.BR init_all_segments(3)
+.BR invert_color(3)
+.BR lcd_write_cmd(3)
+.BR lcd_write_data(3)
+
+.SH AUTHOR
+.B Nachiket Kulkarni <npkulkar@syr.edu>
+
+.SH COLOPHON
+This page is a part documentation of release 1.0 of AntzBBB project. Other man
+pages, source code and documentation can be found at 
+.I https://github.com/nachiketkulkarni/AntzBBB.

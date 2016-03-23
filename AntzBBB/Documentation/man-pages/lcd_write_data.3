@@ -1,0 +1,40 @@
+.\" Project		: AntzBBB
+.\" Hardware Version	: 2.0
+.\" Research Group	: Massively Distributed Robotics Group
+.\" Lab			: Distributed Multi-Agent Laboratory
+.\" Department		: Electrical Engineering and Computer Science
+.\" University		: Syracuse University, Syracuse, NY
+
+.\" This man page documents one of the APIs of one of the subsystems of
+.\" Antz Robots.
+
+
+.TH LCD_WRITE_DATA 3 "03-22-2016" "LCD" "version 1.0"
+.SH NAME
+lcd_write_data - sends the specified one byte of data to the lcd
+.SH SYNOPSIS
+.B #include "lcd.h"
+.sp
+.BI "void lcd_write_data(uint8_t data)"
+
+.SH DESCRIPTION
+.BI "lcd_write_data()"
+is a function that sends one byte of data specified by the host to the lcd.
+
+
+.SH "SEE ALSO"
+.BR lcd_init(3)
+.BR lcd_deinit(3)
+.BR clrscr(3)
+.BR init_all_segments(3)
+.BR invert_color(3)
+.BR lcd_write_cmd(3)
+.BR lcd_printf(3)
+
+.SH AUTHOR
+.B Nachiket Kulkarni <npkulkar@syr.edu>
+
+.SH COLOPHON
+This page is a part documentation of release 1.0 of AntzBBB project. Other man
+pages, source code and documentation can be found at 
+.I https://github.com/nachiketkulkarni/AntzBBB.

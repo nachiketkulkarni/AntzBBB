@@ -1,0 +1,52 @@
+.\" Project		: AntzBBB
+.\" Hardware Version	: 2.0
+.\" Research Group	: Massively Distributed Robotics Group
+.\" Lab			: Distributed Multi-Agent Laboratory
+.\" Lab Director	: Dr. Jae Oh (jcoh@syr.edu)
+.\" Department		: Electrical Engineering and Computer Science
+.\" University		: Syracuse University, Syracuse, NY
+
+.\" This man page documents one of the APIs of one of the subsystems of
+.\" Antz Robots.
+
+.TH SET_DIRECTION 3 "03-22-2016" "DC MOTOR" "version 1.0"
+.SH NAME
+set_direction() - set the direction of robot's movement
+
+.SH SYNOPSIS
+.B #include "motor.h"
+.sp
+.BI "int set_direction(int direction)"
+
+.SH DESCRIPTION
+.B set_direction()
+is a function that sets the direction of the robot to move it either forward or backword.
+.nf
+The value of direction can be one of the following:
+.in +8n
+.nf
+.B * FORWARD
+.B * BACKWORD
+
+.SS "Return value"
+Upon successful return the function returns 0.
+Upon failure the function returns 1.
+If file writing fails, the function exits erroneously.
+
+.SH "SEE ALSO"
+.BR motor_init(3)
+.BR motor_deinit(3)
+.BR move_forward(3)
+.BR move_backward(3)
+.BR set_speed(3)
+.BR turn_left(3)
+.BR turn_right(3)
+.BR stop(3)
+
+.SH AUTHOR
+.B Nachiket Kulkarni <npkulkar@syr.edu>
+
+.SH COLOPHON
+This page is a part documentation of release 1.0 of AntzBBB project. Other man
+pages, source code and documentation can be found at 
+.I https://github.com/nachiketkulkarni/AntzBBB.

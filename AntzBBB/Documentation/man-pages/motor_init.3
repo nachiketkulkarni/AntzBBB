@@ -1,0 +1,47 @@
+.\" Project		: AntzBBB
+.\" Hardware Version	: 2.0
+.\" Research Group	: Massively Distributed Robotics Group
+.\" Lab			: Distributed Multi-Agent Laboratory
+.\" Lab Director	: Dr. Jae Oh (jcoh@syr.edu)
+.\" Department		: Electrical Engineering and Computer Science
+.\" University		: Syracuse University, Syracuse, NY
+
+.\" This man page documents one of the APIs of one of the subsystems of
+.\" Antz Robots.
+
+.TH MOTOR_INIT 3 "03-22-2016" "DC MOTOR" "version 1.0"
+.SH NAME
+motor_init() - constructor of motor subsystem
+
+.SH SYNOPSIS
+.B #include "motor.h"
+.sp
+.BI "void motor_init()"
+
+.SH DESCRIPTION
+.B motor_init()
+is a constructor function that initializes motor subsystem of 
+Antz robots. It opens the required PWM and GPIO files and sets them to
+appropriate values.
+
+.SH NOTES
+Make sure that all the required PWM interfaces are properly exported by the kernel
+(as done in start_motor.sh) before calling using this API from an application program.
+
+.SH "SEE ALSO"
+.BR motor_deinit(3)
+.BR move_forward(3)
+.BR move_backward(3)
+.BR set_speed(3)
+.BR set_direction(3)
+.BR turn_left(3)
+.BR turn_right(3)
+.BR stop(3)
+
+.SH AUTHOR
+.B Nachiket Kulkarni <npkulkar@syr.edu>
+
+.SH COLOPHON
+This page is a part documentation of release 1.0 of AntzBBB project. Other man
+pages, source code and documentation can be found at 
+.I https://github.com/nachiketkulkarni/AntzBBB.
