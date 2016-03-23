@@ -239,22 +239,22 @@ set_pwm_files()
 		write_failure(__FILE__, __func__, __LINE__);
 	}
 
-	w_count = write(fd_p8_13_period, MAX_PERIOD, strlen(MAX_PERIOD));
+	w_count = write(fd_p8_13_period, MT_MAX_PERIOD, strlen(MT_MAX_PERIOD));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
 
-	w_count = write(fd_p9_14_period, MAX_PERIOD, strlen(MAX_PERIOD));
+	w_count = write(fd_p9_14_period, MT_MAX_PERIOD, strlen(MT_MAX_PERIOD));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
 
-	w_count = write(fd_p8_13_duty, SUPERSLOW, strlen(SUPERSLOW));
+	w_count = write(fd_p8_13_duty, MT_SUPERSLOW, strlen(MT_SUPERSLOW));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
 
-	w_count = write(fd_p9_14_duty, SUPERSLOW, strlen(SUPERSLOW));
+	w_count = write(fd_p9_14_duty, MT_SUPERSLOW, strlen(MT_SUPERSLOW));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
@@ -291,8 +291,8 @@ set_speed(char *speed_str)
 	int max_period;
 
 	speed = atoi(speed_str);
-	superfast = atoi(SUPERFAST);
-	max_period = atoi(MAX_PERIOD);
+	superfast = atoi(MT_SUPERFAST);
+	max_period = atoi(MT_MAX_PERIOD);
 	if (speed <= superfast || speed >= max_period) {
 		fprintf(stderr, "*** WARNING: speed range = 1 to 3999\n");
 		fprintf(stderr, "Numerically higher value means slower speed\n");
@@ -441,7 +441,7 @@ turn_left()
 		write_failure(__FILE__, __func__, __LINE__);
 	}
 
-	w_count = write(fd_p8_13_duty, MAX_PERIOD, strlen(MAX_PERIOD));
+	w_count = write(fd_p8_13_duty, MT_MAX_PERIOD, strlen(MT_MAX_PERIOD));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
@@ -469,7 +469,7 @@ turn_right()
 		write_failure(__FILE__, __func__, __LINE__);
 	}
 
-	w_count = write(fd_p9_14_duty, MAX_PERIOD, strlen(MAX_PERIOD));
+	w_count = write(fd_p9_14_duty, MT_MAX_PERIOD, strlen(MT_MAX_PERIOD));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
