@@ -7,4 +7,5 @@ LDFLAGS =
 LIBS = 
 ECHO = echo
 SHELL = /bin/sh
-INCLUDE = 
+INCLUDE =
+CP = cp

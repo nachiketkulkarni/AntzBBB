@@ -9,18 +9,22 @@ COMM_DIR=$(UTILS_DIR)/communication
 IR_DIR=$(COMM_DIR)/ir
 BT_DIR=$(COMM_DIR)/bluetooth
 XBEE_DIR=$(COMM_DIR)/xbee
+INCLUDE_DIR=$(SRC_DIR)/include
+MANPAGE_DIR=Documentation/man-pages
+LIB_DIR=$(SRC_DIR)/libs
 
 help:
 	@echo "		all		: build all components, library, robots"
 	@echo "		antz		: build robots"
 	@echo "		utils		: build all utilities"
-	@echo "		display		: build display"
+	@echo "		lcd		: build lcd"
 	@echo "		motor		: build motor"
 	@echo "		communication	: build all communication components"
 	@echo "		ir		: build ir communication"
 	@echo "		bluetooth	: build bluetooth communication"
 	@echo "		xbee		: build xbee communication"
 	@echo "		librobotutils	: build utility library"
+	@echo "		install		: installs headers, libcoreutils.so and man pages"
 	@echo "		clean_all	: clean all executables"
 	@echo "		clean_antz	: clean all executables in antz/"
 	@echo "		clean_utils	: clean all executables in utils/"
@@ -36,7 +40,7 @@ antz:
 utils:
 	cd $(UTILS_DIR) && $(MAKE) all
 
-display:
+lcd:
 	cd $(UTILS_DIR) && $(MAKE) display
 
 motor:
@@ -57,6 +61,11 @@ xbee:
 librobotutils:
 	cd $(UTILS_DIR) && $(MAKE) build_so
 
+install:
+	cd $(INCLUDE_DIR) && $(MAKE) install
+	cd $(MANPAGE_DIR) && $(MAKE) install
+	cd $(LIB_DIR) && $(MAKE) install
+
 clean_all:
 	cd $(ANTZ_DIR) && $(MAKE) clean
 	cd $(UTILS_DIR) && $(MAKE) clean_utils
@@ -67,5 +76,5 @@ clean_antz:
 clean_utils:
 	cd $(UTILS_DIR) && $(MAKE) clean_utils
 
-.PHONY: all librobotutils motor ir bluetooth xbee utils display communication antz \
+.PHONY: all librobotutils motor ir bluetooth xbee utils lcd communication antz install \
 		clean_all clean_antz clean_utils
