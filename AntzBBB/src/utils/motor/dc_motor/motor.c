@@ -1,6 +1,6 @@
 /*
  * motor.c
- *	Imlementation of all the required functions to carry out
+ *	Implementation of all the required functions to carry out
  *	smooth functioning of the DC Motor
  */
 
@@ -36,7 +36,6 @@ open_pwm_files(char *p8_13_pwm_dir, char *p9_14_pwm_dir)
 	strncpy(buf, p8_13_pwm_dir, strlen(p8_13_pwm_dir));
 	strncat (buf, pwm_run, strlen(pwm_run));
 	fd_p8_13_run = open(buf, O_WRONLY);
-	printf("%s\n", buf);
 	if (fd_p8_13_run == -1) {
 		open_failure(__FILE__, __func__, __LINE__);
 	}
@@ -249,16 +248,6 @@ set_pwm_files()
 		write_failure(__FILE__, __func__, __LINE__);
 	}
 
-	w_count = write(fd_p8_13_duty, MT_SUPERSLOW, strlen(MT_SUPERSLOW));
-	if (w_count == -1) {
-		write_failure(__FILE__, __func__, __LINE__);
-	}
-
-	w_count = write(fd_p9_14_duty, MT_SUPERSLOW, strlen(MT_SUPERSLOW));
-	if (w_count == -1) {
-		write_failure(__FILE__, __func__, __LINE__);
-	}
-
 	w_count = write(fd_p8_13_run, RUN, strlen(RUN));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
@@ -362,7 +351,6 @@ move_forward(char *speed_str)
 	speed = atoi(speed_str);
 	ret = set_direction(FORWARD);
 	current_direction = ret == 0 ? FORWARD : current_direction;
-
 	arg_speed = speed == -1 ? current_speed : speed;
 
 	memset(arg_speed_str, 0, 10);
@@ -431,8 +419,8 @@ turn_left()
 {
 	int w_count;
 	struct timespec ts = {
-		.tv_sec = 2,
-		.tv_nsec = 10000000,
+		.tv_sec = 1,
+		.tv_nsec = 730000000,
 	};
 	stop();
 
@@ -459,8 +447,8 @@ turn_right()
 {
 	int w_count;
 	struct timespec ts = {
-		.tv_sec = 2,
-		.tv_nsec = 10000000,
+		.tv_sec = 1,
+		.tv_nsec = 730000000,
 	};
 	stop();
 
@@ -551,3 +539,4 @@ motor_deinit()
 
 	return;
 }
+
