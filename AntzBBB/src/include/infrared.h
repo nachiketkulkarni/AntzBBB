@@ -3,6 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-int division(int x, int y);
+#include <protocol.h>
+#include <sender.h>
 #endif	// _INFRARED_H_
