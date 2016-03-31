@@ -271,6 +271,23 @@ motor_init(char *p8_13_pwm_dir, char *p9_14_pwm_dir)
 	set_pwm_files();
 }
 
+char *convert_speed(char *speed_str)
+{
+	if (!strncmp(speed_str, "3500", strlen("3500"))) {
+		return "100";
+	} else if (!strncmp(speed_str, "3000", strlen("3000"))) {
+		return "500";
+	} else if (!strncmp(speed_str, "1000", strlen("1000"))) {
+		return "1000";
+	} else if (!strncmp(speed_str, "500", strlen("500"))) {
+		return "3000";
+	} else if (!strncmp(speed_str, "100", strlen("100"))) {
+		return "3500";
+	} else {
+		return NULL;
+	}
+}
+
 int
 set_speed(char *speed_str)
 {
@@ -279,21 +296,21 @@ set_speed(char *speed_str)
 	int superfast;
 	int max_period;
 
-	speed = atoi(speed_str);
-	superfast = atoi(MT_SUPERFAST);
+	speed = atoi(convert_speed(speed_str));
+	superfast = atoi(convert_speed(MT_SUPERFAST));
 	max_period = atoi(MT_MAX_PERIOD);
-	if (speed <= superfast || speed >= max_period) {
-		fprintf(stderr, "*** WARNING: speed range = 1 to 3999\n");
+	if (speed < superfast || speed >= max_period) {
+		fprintf(stderr, "*** WARNING: speed range = 1 to 3999 :: speed = %d, superfast = %d, max_period = %d\n", speed, superfast, max_period);
 		fprintf(stderr, "Numerically higher value means slower speed\n");
 		return 1;
 	}
 
-	w_count = write(fd_p8_13_duty, speed_str, strlen(speed_str));
+	w_count = write(fd_p8_13_duty, convert_speed(speed_str), strlen(convert_speed(speed_str)));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
 
-	w_count = write(fd_p9_14_duty, speed_str, strlen(speed_str));
+	w_count = write(fd_p9_14_duty, convert_speed(speed_str), strlen(convert_speed(speed_str)));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
@@ -347,8 +364,7 @@ move_forward(char *speed_str)
 	int arg_speed;
 	int speed;
 	char arg_speed_str[10];
-
-	speed = atoi(speed_str);
+	speed = atoi(convert_speed(speed_str));
 	ret = set_direction(FORWARD);
 	current_direction = ret == 0 ? FORWARD : current_direction;
 	arg_speed = speed == -1 ? current_speed : speed;
@@ -368,8 +384,7 @@ move_backward(char *speed_str)
 	int arg_speed;
 	int speed;
 	char arg_speed_str[10];
-
-	speed = atoi(speed_str);
+	speed = atoi(convert_speed(speed_str));
 	ret = set_direction(BACKWARD);
 	current_direction = ret == 0 ? BACKWARD : current_direction;
 
@@ -424,7 +439,7 @@ turn_left()
 	};
 	stop();
 
-	w_count = write(fd_p9_14_duty, MT_SLOW, strlen(MT_SLOW));
+	w_count = write(fd_p9_14_duty, convert_speed(MT_SLOW), strlen(convert_speed(MT_SLOW)));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
@@ -437,7 +452,7 @@ turn_left()
 
 	nanosleep(&ts, NULL);
 
-	set_speed(MT_SUPERSLOW);
+	set_speed(convert_speed(MT_SUPERSLOW));
 
 	return;
 }
@@ -452,7 +467,7 @@ turn_right()
 	};
 	stop();
 
-	w_count = write(fd_p8_13_duty, MT_SLOW, strlen(MT_SLOW));
+	w_count = write(fd_p8_13_duty, convert_speed(MT_SLOW), strlen(convert_speed(MT_SLOW)));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
@@ -465,7 +480,7 @@ turn_right()
 
 	nanosleep(&ts, NULL);
 
-	set_speed(MT_SUPERSLOW);
+	set_speed(convert_speed(MT_SUPERSLOW));
 
 	return;
 }
@@ -539,4 +554,3 @@ motor_deinit()
 
 	return;
 }
-
