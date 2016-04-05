@@ -1,0 +1,35 @@
+.\" Project		: AntzBBB
+.\" Hardware Version	: 2.0
+.\" Research Group	: Massively Distributed Robotics Group
+.\" Lab			: Distributed Multi-Agent Laboratory
+.\" Lab Director	: Dr. Jae Oh (jcoh@syr.edu)
+.\" Department		: Electrical Engineering and Computer Science
+.\" University		: Syracuse University, Syracuse, NY
+
+.\" This man page documents one of the APIs of one of the subsystems of
+.\" Antz Robots.
+
+.TH IR_SENDER_DEINIT 3 "04-05-2016" "IR" "version 1.0"
+.SH NAME
+ir_sender_deinit() - destructor of ir sender
+
+.SH SYNOPSIS
+.B #include <sender.h>
+.sp
+.BI "void ir_sender_deinit()"
+
+.SH DESCRIPTION
+.B ir_sender_deinit()
+deinitializes the sender. It closes all the opened files.
+
+.SH "SEE ALSO"
+.BR ir_sender_init(3)
+.BR send_data(3)
+
+.SH AUTHOR
+.B Nachiket Kulkarni <npkulkar@syr.edu>
+
+.SH COLOPHON
+This page is a part documentation of release 1.0 of AntzBBB project. Other man
+pages, source code and documentation can be found at
+.I https://github.com/nachiketkulkarni/AntzBBB.

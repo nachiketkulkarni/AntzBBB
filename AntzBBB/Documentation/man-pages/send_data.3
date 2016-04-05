@@ -1,0 +1,42 @@
+.\" Project		: AntzBBB
+.\" Hardware Version	: 2.0
+.\" Research Group	: Massively Distributed Robotics Group
+.\" Lab			: Distributed Multi-Agent Laboratory
+.\" Lab Director	: Dr. Jae Oh (jcoh@syr.edu)
+.\" Department		: Electrical Engineering and Computer Science
+.\" University		: Syracuse University, Syracuse, NY
+
+.\" This man page documents one of the APIs of one of the subsystems of
+.\" Antz Robots.
+
+.TH SEND_DATA 3 "04-05-2016" "IR" "version 1.0"
+.SH NAME
+send_data() - send specified number bits of an unsigned integer
+
+.SH SYNOPSIS
+.B #include <sender.h>
+.sp
+.BI "void send_data(int num_bits, uint32_t data)"
+
+.SH DESCRIPTION
+.B send_data()
+sends
+.BI num_bits
+bits of
+.BI data.
+
+.SH NOTES
+Make sure that all the hardware is properly defined in the source code, before
+using this API in an application program.
+
+.SH "SEE ALSO"
+.BR ir_sender_init(3)
+.BR ir_sender_deinit(3)
+
+.SH AUTHOR
+.B Nachiket Kulkarni <npkulkar@syr.edu>
+
+.SH COLOPHON
+This page is a part documentation of release 1.0 of AntzBBB project. Other man
+pages, source code and documentation can be found at
+.I https://github.com/nachiketkulkarni/AntzBBB.

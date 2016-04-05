@@ -1,0 +1,41 @@
+.\" Project		: AntzBBB
+.\" Hardware Version	: 2.0
+.\" Research Group	: Massively Distributed Robotics Group
+.\" Lab			: Distributed Multi-Agent Laboratory
+.\" Lab Director	: Dr. Jae Oh (jcoh@syr.edu)
+.\" Department		: Electrical Engineering and Computer Science
+.\" University		: Syracuse University, Syracuse, NY
+
+.\" This man page documents one of the APIs of one of the subsystems of
+.\" Antz Robots.
+
+.TH IR_SENDER_INIT 3 "04-05-2016" "IR" "version 1.0"
+.SH NAME
+ir_sender_init() - constructor of ir sender
+
+.SH SYNOPSIS
+.B #include <sender.h>
+.sp
+.BI "void ir_sender_init(char *pwm_p9_14_path)"
+
+.SH DESCRIPTION
+.B ir_sender_init()
+initializes the sender.
+.BI pwm_p9_14_path
+is the path of PWM directory of P9_14 pin.
+
+.SH NOTES
+Make sure that all the hardware is properly defined and all the required interfaces are exported by the kernel, before
+using this API in an application program.
+
+.SH "SEE ALSO"
+.BR send_data(3)
+.BR ir_sender_deinit(3)
+
+.SH AUTHOR
+.B Nachiket Kulkarni <npkulkar@syr.edu>
+
+.SH COLOPHON
+This page is a part documentation of release 1.0 of AntzBBB project. Other man
+pages, source code and documentation can be found at
+.I https://github.com/nachiketkulkarni/AntzBBB.

@@ -1,0 +1,49 @@
+.\" Project		: AntzBBB
+.\" Hardware Version	: 2.0
+.\" Research Group	: Massively Distributed Robotics Group
+.\" Lab			: Distributed Multi-Agent Laboratory
+.\" Lab Director	: Dr. Jae Oh (jcoh@syr.edu)
+.\" Department		: Electrical Engineering and Computer Science
+.\" University		: Syracuse University, Syracuse, NY
+
+.\" This man page documents one of the APIs of one of the subsystems of
+.\" Antz Robots.
+
+.TH LCD_WRITE_STR 3 "03-22-2016" "LCD" "version 1.0"
+.SH NAME
+lcd_write_str() - writes the stipulated string on the screen
+
+.SH SYNOPSIS
+.B #include <lcd.h>
+.sp
+.BI "void lcd_write_str(uint8_t *str)"
+
+.SH DESCRIPTION
+.B lcd_write_str()
+writes the string specified by
+.BI str
+on the lcd screen.
+
+.SH NOTES
+This API can be used in conjunction with lcd_set_coordinates(). Unlike lcd_printf(),
+the user is responsible for managing screen coordinates when lcd_write_str() is
+used.Thus it is recommended that either of the APIs should be used in an application
+program but not both.
+
+.SH "SEE ALSO"
+.BR lcd_deinit(3)
+.BR clrscr(3)
+.BR invert_color(3)
+.BR init_all_segments(3)
+.BR lcd_write_cmd(3)
+.BR lcd_write_data(3)
+.BR lcd_set_coordinates(3)
+.BR lcd_printf(3)
+
+.SH AUTHOR
+.B Nachiket Kulkarni <npkulkar@syr.edu>
+
+.SH COLOPHON
+This page is a part documentation of release 1.0 of AntzBBB project. Other man
+pages, source code and documentation can be found at
+.I https://github.com/nachiketkulkarni/AntzBBB.
