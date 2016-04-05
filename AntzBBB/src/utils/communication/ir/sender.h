@@ -28,6 +28,7 @@ void send(uint32_t data);
 void ir_sender_deinit();
 void test_send_8_bits(int *arr);
 void test_send_1_bit(int num);
+void send_data(int num_bits, uint32_t data);
 
 int fd_p9_14_run;
 int fd_p9_14_period;

@@ -12,20 +12,20 @@
 
 #define MAX_BUF		1000
 #define MAX_EVENTS	5
-#define SIGNATURE       1200000
-#define ONE             600000
-#define ZERO            300000
-#define NOSEND          300000
+#define SIGNATURE       4800000
+#define ONE             2400000
+#define ZERO            1200000
+#define NOSEND          1200000
 
 typedef enum {INIT, NOSIG, BEGIN, END} sig_state;
 
-#define TOLERANCE		0.3
+#define TOLERANCE		0.27
 #define LOW_LEN(ns)		(int) (ns * (1.0 - TOLERANCE))
 #define HIGH_LEN(ns)		(int) (ns * (1.0 + TOLERANCE))
 #define NSEC_TO_USEC(ns)	(int) (ns / 1000)	
 
 struct timespec ts_diff(struct timespec old, struct timespec new);
-int arr[8] = {44, 44, 44, 44, 44, 44, 44, 44};
+int arr[9] = {44, 44, 44, 44, 44, 44, 44, 44, 44};
 
 int
 main()
@@ -35,7 +35,7 @@ main()
 	struct epoll_event events;
 	char buf[MAX_BUF];
 	int count = 0;
-	struct timespec start, end, diff[8], diff1[8];
+	struct timespec start, end, diff[9];
 	sig_state state = NOSIG;
 	int usec = 0;
 	int i = 0;
@@ -45,9 +45,6 @@ main()
 	memset(&start, 0, sizeof(struct timespec));
 	memset(&end, 0, sizeof(struct timespec));
 	memset(&diff, 0, sizeof(struct timespec));
-	printf("Time end = %ld sec %ld nsec\n", end.tv_sec, end.tv_nsec);
-	printf("Time start = %ld sec %ld nsec\n\n\n", start.tv_sec, start.tv_nsec);
-	printf("About to epoll_create()\n\n");
 	epfd = epoll_create(5);
 	if (epfd == -1) {
 		fprintf(stderr, "epoll_create() failed\n");
@@ -64,13 +61,11 @@ main()
 	ev.events = EPOLLIN | EPOLLET | EPOLLPRI;
 	ev.data.fd = fd;
 
-	printf("About to epoll_ctl()\n\n");
 	if (epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &ev) == -1) {
 		fprintf(stderr, "epoll_ctl() failed\n");
 		exit(EXIT_FAILURE);
 	}
 
-	printf("About to epoll_wait()\n\n");
 
 	while(1) {
 		ready = epoll_wait(epfd, &events, 1, -1);
@@ -85,7 +80,6 @@ main()
 		}
 
 		count++;
-		//write(STDOUT_FILENO, "*** , ", 6);
 
 //		printf("fd = %d; events %s %s %s\n", ev.data.fd,
 //				(ev.events & EPOLLIN) ? "EPOLLIN" : "",
@@ -93,12 +87,6 @@ main()
 //				(ev.events & EPOLLERR) ? "EPOLLERR" : "");
 
 		if (ev.events & EPOLLIN) {
-//			s = read(ev.data.fd, buf, MAX_BUF);
-//			if (s == -1) {
-//				fprintf(stderr, "read() failed\n");
-//				exit(EXIT_FAILURE);
-//			}
-//			
 			if (state == NOSIG) {
 				state = BEGIN;
 				continue;
@@ -110,33 +98,25 @@ main()
 				clock_gettime(CLOCK_REALTIME, &end);
 				
 				diff[i] = ts_diff(start, end);
-		//		write(STDOUT_FILENO, "## , ", 6);
-				if (i == 8) {
-					break;
-				}
-
 				if (diff[i].tv_nsec >= LOW_LEN(SIGNATURE) && diff[i].tv_nsec <= HIGH_LEN(SIGNATURE)) {
-					printf("signature received\n");
+		//			printf("signature received\n");
+					arr[i] = 200;
 			        } else if (diff[i].tv_nsec >= LOW_LEN(ONE) && diff[i].tv_nsec <= HIGH_LEN(ONE)) {
 		            		arr[i] = 1;
 	//				write(STDOUT_FILENO, ".. , ", 6);
-		//			i++;
 		    		} else if (diff[i].tv_nsec >= LOW_LEN(ZERO) && diff[i].tv_nsec <= HIGH_LEN(ZERO)) {
 	                 		arr[i] = 0;
 	//				write(STDOUT_FILENO, "## , ", 6);
-		//			i++;
 				}
 				
-				i++;
-				if (i == 8) {
-					printf("I am breaking\n");
+				++i;
+				if (i == 9) {
+					//printf("I am breaking\n");
 					break;
 				}
 				state = BEGIN;
 			}
-//			printf("read %d bytes: %.*s\n", s, s, buf);
 		} else if (ev.events & (EPOLLHUP | EPOLLERR)) {
-//			printf("closing fd %d\n", ev.data.fd);
 			if (close(ev.data.fd) == -1) {
 				fprintf(stderr, "close() failed\n");
 				exit(EXIT_FAILURE);
@@ -144,13 +124,17 @@ main()
 		}
 	}
 
-	printf("Range for signature = %ld to % ld\n", LOW_LEN(SIGNATURE), HIGH_LEN(SIGNATURE));
-	printf("Range for one = %ld to % ld\n", LOW_LEN(ONE), HIGH_LEN(ONE));
-	printf("Range for zero = %ld to % ld\n", LOW_LEN(ZERO), HIGH_LEN(ZERO));
-	for (i = 0; i < 8; i++) {
-		printf("diff[%d].sec = %ld   ::  diff[%d].nsec = %ld\n", i, diff[i].tv_sec, i, diff[i].tv_nsec);
-		printf("digit:--- %d\n", arr[i]);
+//	printf("Range for sign = %ld to % ld\n", LOW_LEN(SIGNATURE), HIGH_LEN(SIGNATURE));
+//	printf("Range for one  = %ld to % ld\n", LOW_LEN(ONE), HIGH_LEN(ONE));
+//	printf("Range for zero = %ld to % ld\n", LOW_LEN(ZERO), HIGH_LEN(ZERO));
+
+	printf("\n");
+	printf("\t%s ", (arr[0] == 200 ? "SIGNATURE" : ""));
+	for (i = 1; i < 9; i++) {
+//		printf("diff[%d].sec = %ld   ::  diff[%d].nsec = %ld\n", i, diff[i].tv_sec, i, diff[i].tv_nsec);
+		printf(" %d ", arr[i]);
 	}
+	printf("\n\n");
 	return 0;
 }
 
