@@ -6,18 +6,13 @@
 #include <errno.h>
 #include <time.h>
 #include <limits.h>
+#include "protocol.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/epoll.h>
 
-#define MAX_BUF		1000
-#define MAX_EVENTS	5
-#define SIGNATURE       4800000
-#define ONE             2400000
-#define ZERO            1200000
-#define NOSEND          1200000
 
-typedef enum {INIT, NOSIG, BEGIN, END} sig_state;
+typedef enum {INIT, NOSIG, BEGIN, DONE, END} sig_state;
 
 #define TOLERANCE		0.27
 #define LOW_LEN(ns)		(int) (ns * (1.0 - TOLERANCE))
@@ -33,7 +28,6 @@ main()
 	int epfd, ready, fd, s, j, numOpenFds;
 	struct epoll_event ev;
 	struct epoll_event events;
-	char buf[MAX_BUF];
 	int count = 0;
 	struct timespec start, end, diff[9];
 	sig_state state = NOSIG;
@@ -79,13 +73,6 @@ main()
 			}
 		}
 
-		count++;
-
-//		printf("fd = %d; events %s %s %s\n", ev.data.fd,
-//				(ev.events & EPOLLIN) ? "EPOLLIN" : "",
-//				(ev.events & EPOLLHUP) ? "EPOLLHUP" : "",
-//				(ev.events & EPOLLERR) ? "EPOLLERR" : "");
-
 		if (ev.events & EPOLLIN) {
 			if (state == NOSIG) {
 				state = BEGIN;
@@ -99,22 +86,36 @@ main()
 				
 				diff[i] = ts_diff(start, end);
 				if (diff[i].tv_nsec >= LOW_LEN(SIGNATURE) && diff[i].tv_nsec <= HIGH_LEN(SIGNATURE)) {
-		//			printf("signature received\n");
 					arr[i] = 200;
 			        } else if (diff[i].tv_nsec >= LOW_LEN(ONE) && diff[i].tv_nsec <= HIGH_LEN(ONE)) {
 		            		arr[i] = 1;
-	//				write(STDOUT_FILENO, ".. , ", 6);
 		    		} else if (diff[i].tv_nsec >= LOW_LEN(ZERO) && diff[i].tv_nsec <= HIGH_LEN(ZERO)) {
 	                 		arr[i] = 0;
-	//				write(STDOUT_FILENO, "## , ", 6);
 				}
 				
 				++i;
-				if (i == 9) {
-					//printf("I am breaking\n");
-					break;
-				}
 				state = BEGIN;
+				if (i == 9) {
+					for (cnt = 1; cnt < 9; cnt++) {
+						mask |= arr[cnt];
+						mask <<= cnt - 1;
+						num_received |= mask;
+						mask = 0;
+					}
+					printf("Received: %d", num_received);
+					for (cnt = 0; cnt < 9; cnt++) {
+						arr[cnt] = 44;
+					}
+					if (num_received == 0) {
+						printf("breaking\n");
+						break;
+					}
+					num_received = 0;
+					mask = 0;
+					i = 0;
+
+					continue;
+				}
 			}
 		} else if (ev.events & (EPOLLHUP | EPOLLERR)) {
 			if (close(ev.data.fd) == -1) {
@@ -124,17 +125,6 @@ main()
 		}
 	}
 
-//	printf("Range for sign = %ld to % ld\n", LOW_LEN(SIGNATURE), HIGH_LEN(SIGNATURE));
-//	printf("Range for one  = %ld to % ld\n", LOW_LEN(ONE), HIGH_LEN(ONE));
-//	printf("Range for zero = %ld to % ld\n", LOW_LEN(ZERO), HIGH_LEN(ZERO));
-
-	printf("\n");
-	printf("\t%s ", (arr[0] == 200 ? "SIGNATURE" : ""));
-	for (i = 1; i < 9; i++) {
-//		printf("diff[%d].sec = %ld   ::  diff[%d].nsec = %ld\n", i, diff[i].tv_sec, i, diff[i].tv_nsec);
-		printf(" %d ", arr[i]);
-	}
-	printf("\n\n");
 	return 0;
 }
 
