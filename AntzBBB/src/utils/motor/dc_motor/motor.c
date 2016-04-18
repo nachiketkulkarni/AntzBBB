@@ -434,8 +434,8 @@ turn_left()
 {
 	int w_count;
 	struct timespec ts = {
-		.tv_sec = 1,
-		.tv_nsec = 730000000,
+		.tv_sec = 0,
+		.tv_nsec = 810000000,
 	};
 	stop();
 
@@ -444,7 +444,17 @@ turn_left()
 		write_failure(__FILE__, __func__, __LINE__);
 	}
 
-	w_count = write(fd_p8_13_duty, MT_MAX_PERIOD, strlen(MT_MAX_PERIOD));
+	w_count = write(fd_p8_13_duty, MT_SLOW, strlen(MT_MAX_PERIOD));
+	if (w_count == -1) {
+		write_failure(__FILE__, __func__, __LINE__);
+	}
+	
+	w_count = write(fd_gpio_p9_23_value, CLOCKWISE, strlen(CLOCKWISE));
+	if (w_count == -1) {
+		write_failure(__FILE__, __func__, __LINE__);
+	}
+	
+	w_count = write(fd_gpio_p8_12_value, ANTICLOCKWISE, strlen(ANTICLOCKWISE));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
@@ -462,8 +472,8 @@ turn_right()
 {
 	int w_count;
 	struct timespec ts = {
-		.tv_sec = 1,
-		.tv_nsec = 730000000,
+		.tv_sec = 0,
+		.tv_nsec = 790000000,
 	};
 	stop();
 
@@ -472,7 +482,17 @@ turn_right()
 		write_failure(__FILE__, __func__, __LINE__);
 	}
 
-	w_count = write(fd_p9_14_duty, MT_MAX_PERIOD, strlen(MT_MAX_PERIOD));
+	w_count = write(fd_p9_14_duty, MT_SLOW, strlen(MT_MAX_PERIOD));
+	if (w_count == -1) {
+		write_failure(__FILE__, __func__, __LINE__);
+	}
+	
+	w_count = write(fd_gpio_p9_23_value, ANTICLOCKWISE, strlen(CLOCKWISE));
+	if (w_count == -1) {
+		write_failure(__FILE__, __func__, __LINE__);
+	}
+	
+	w_count = write(fd_gpio_p8_12_value, CLOCKWISE, strlen(ANTICLOCKWISE));
 	if (w_count == -1) {
 		write_failure(__FILE__, __func__, __LINE__);
 	}
