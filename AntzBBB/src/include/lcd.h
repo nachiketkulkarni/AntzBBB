@@ -75,7 +75,7 @@ void init_all_segments();
 void lcd_set_coordinates(int x, int y);
 void lcd_write_cmd(uint8_t cmd);
 void lcd_write_data(uint8_t data);
-void lcd_write_str(uint8_t *str)
+void lcd_write_str(uint8_t *str);
 int lcd_printf(const char *fmt, ...);
 
 #endif 	//_LCD_H_
